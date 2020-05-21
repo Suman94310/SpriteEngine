@@ -1,0 +1,61 @@
+.sceneContainer {
+    /* height: 45.3%; */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 9px;
+    font-family: sans-serif;
+    color: whitesmoke;
+    grid-column-start: 1;
+    grid-row: 1/7;
+}
+
+.sceneContainer .tab {
+    background-color: #333B4F;
+    width: 58px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sceneContainer > .container {
+    background-color: #333B4F;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sceneContainer >.container > .search{
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+}
+
+.sceneContainer >.container > .search > .add{
+    color: whitesmoke;
+    margin-left: 7px;
+}
+
+.sceneContainer >.container > .search > .searchBar{
+    border: solid 1px #191D27;
+}
+
+.sceneContainer >.container > .scenes{
+    height: 95%;
+    background-color: #262C3B;
+    margin: 4px;
+    margin-top: 0;
+    border: solid 1px #191D27;
+    overflow: hidden;
+}
+
+.sceneContainer >.container > .scenes  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 20px;
+    text-align: left;
+}
+
+

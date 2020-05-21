@@ -1,0 +1,71 @@
+.fileContainer {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 9px;
+    font-family: sans-serif;
+    color: whitesmoke;
+    grid-column-start: 1;
+    grid-row: 7/13;
+}
+
+.fileContainer .tab {
+    background-color: #333B4F;
+    width: 58px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fileContainer > .container {
+    background-color: #333B4F;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.fileContainer >.container > .search{
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+}
+
+.fileContainer >.container > .search > .add{
+    color: whitesmoke;
+    margin-left: 7px;
+}
+
+.fileContainer >.container > .search > .add:hover{
+    background: #333B4F;
+}
+
+.fileContainer >.container > .search > .searchBar{
+    border: solid 1px #191D27;
+}
+
+.fileContainer >.container > .search > .searchBar > input{
+    border: solid 0 black;
+    outline: none;
+    box-shadow: none;
+    background-color: #262C3B;
+}
+
+.fileContainer >.container > .files{
+    height: 95%;
+    background-color: #262C3B;
+    margin: 4px;
+    margin-top: 0;
+    border: solid 1px #191D27;
+    overflow: hidden;
+}
+
+.fileContainer >.container > .files  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 20px;
+    text-align: left;
+}
+
+

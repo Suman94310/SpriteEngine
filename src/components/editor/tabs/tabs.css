@@ -1,0 +1,17 @@
+.tabContainer{
+    background: #202531;
+    color: whitesmoke;
+    display: flex;
+    flex-direction: row;
+}
+
+.tabContainer > div {
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tabContainer > div:hover{
+    cursor: pointer;
+}

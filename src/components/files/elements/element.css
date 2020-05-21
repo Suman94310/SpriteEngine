@@ -1,0 +1,8 @@
+.element {
+    display: block;
+}
+
+.element:hover {
+    background: #333B4F;
+    cursor: pointer;
+}

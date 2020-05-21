@@ -1,0 +1,6 @@
+.codeContainer {
+    background-color: #333B4F;
+    grid-column: 1/2;
+    grid-row: 2/3;
+    /* padding-left: 10px; */
+}
