@@ -29,14 +29,14 @@ export default class Scenes extends React.Component {
         </li>)
         this.setState({sceneList})
         this.state.sceneRefList.push(sceneRef)
-        document.addEventListener("click",(e)=>{
-            if(true){
-                console.log(e.target)
-            }
-            else{
-                console.log("cyka")
-            }
-        })
+        // document.addEventListener("click",(e)=>{
+        //     if(true){
+        //         console.log(e.target)
+        //     }
+        //     else{
+        //         console.log("cyka")
+        //     }
+        // })
     }
 
     render () {
@@ -55,7 +55,6 @@ export default class Scenes extends React.Component {
                     <div className="scenes" id="scenes">
                         <ul>
                             <li>
-                                <Scene/>
                                 <ul>
                                     <li>box1</li>
                                     <li>box1</li>

@@ -41,6 +41,13 @@
     border: solid 1px #191D27;
 }
 
+.sceneContainer >.container > .search > .searchBar > input{
+    border: solid 0 black;
+    outline: none;
+    box-shadow: none;
+    background-color: #262C3B;
+}
+
 .sceneContainer >.container > .scenes{
     height: 95%;
     background-color: #262C3B;

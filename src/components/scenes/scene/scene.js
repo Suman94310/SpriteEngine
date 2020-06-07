@@ -14,7 +14,7 @@ export default class scene extends React.Component{
     }
 
     componentDidMount = ()=>{
-        this.state.id = this.props.id
+        this.setState({id:this.props.id})
     }
 
     addScene = ()=>{
@@ -28,14 +28,19 @@ export default class scene extends React.Component{
             });
     }
 
-    hideInput = ()=>{
-        document.getElementById(("scene"+(this.id)))
+    hideInput = (e)=>{
+        // document.getElementById(("scene"+(this.id)))
+        e.target.style.display = "none"
+    }
+
+    handleInputChange = (e)=>{
+        this.setState({name:e.target.value})
     }
 
     render(){
         return(
             <div className="scene">
-                <input type="text" key={"sceneInput" + (this.state.id)}/>
+                <input type="text" key={"sceneInput" + (this.state.id)} onBlur={(e)=>{this.hideInput(e)}} onChange={(e)=>{this.handleInputChange(e)}}/>
                 {this.state.name}
                 <i class="fas fa-plus" onClick={()=>{this.addScene()}}></i>
             </div>

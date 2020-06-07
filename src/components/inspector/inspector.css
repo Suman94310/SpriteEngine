@@ -41,6 +41,13 @@
     border: solid 1px #191D27;
 }
 
+.inspectorContainer >.container > .search > .searchBar > input{
+    border: solid 0 black;
+    outline: none;
+    box-shadow: none;
+    background-color: #262C3B;
+}
+
 .inspectorContainer >.container > .inspectors{
     height: 95%;
     background-color: #262C3B;
