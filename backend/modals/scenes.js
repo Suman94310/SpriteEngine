@@ -3,7 +3,6 @@ let Schema = mongoose.Schema
 
 let sceneSchema = new Schema({
     name: String,
-    rank: Number,
     objects: Array
 })
 

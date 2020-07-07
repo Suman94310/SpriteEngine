@@ -2,6 +2,7 @@ import React from 'react'
 import './scenes.css'
 import PerfectScrollbar from 'perfect-scrollbar';
 import Scene from './scene/scene'
+import axios from 'axios'
 
 export default class Scenes extends React.Component {
     constructor(){
@@ -18,6 +19,24 @@ export default class Scenes extends React.Component {
             wheelPropagation: true,
             minScrollbarLength: 20
         });
+
+        this.updateSceneList()
+    }
+
+    updateSceneList = ()=>{
+        axios({
+            method: 'post',
+            url: 'http://localhost:3300/getScenes',
+            // responseType: 'stream'
+          }).then((res) =>{
+            console.log(res)
+            let newSceneList = []
+            for(let i=0; i<res.data.length; i++){
+                newSceneList.push(<Scene key={res.data[i]._id} name={res.data[i].name} updateSceneList={this.updateSceneList}/>)
+                console.log(newSceneList[i])
+            }
+            this.setState({sceneList:newSceneList})
+        });
     }
 
     createScene = ()=>{
@@ -25,18 +44,10 @@ export default class Scenes extends React.Component {
         let sceneList = [...this.state.sceneList]
         sceneList.push(
         <li key={"sceneList"+(sceneList.length)}>
-            <Scene key={"scene"+(sceneList.length)} id={sceneList.length} ref={sceneRef}/>
+            <Scene key={"scene"+(sceneList.length)} id={sceneList.length} ref={sceneRef} updateSceneList={this.updateSceneList} new={true}/>
         </li>)
         this.setState({sceneList})
         this.state.sceneRefList.push(sceneRef)
-        // document.addEventListener("click",(e)=>{
-        //     if(true){
-        //         console.log(e.target)
-        //     }
-        //     else{
-        //         console.log("cyka")
-        //     }
-        // })
     }
 
     render () {
@@ -54,13 +65,13 @@ export default class Scenes extends React.Component {
                     </div>
                     <div className="scenes" id="scenes">
                         <ul>
-                            <li>
+                            {/* <li>
                                 <ul>
                                     <li>box1</li>
                                     <li>box1</li>
                                     <li>box1</li>
                                 </ul>
-                            </li>
+                            </li> */}
                             {this.state.sceneList}
                         </ul>
                     </div>
