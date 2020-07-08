@@ -15,6 +15,7 @@ export default class scene extends React.Component{
 
     componentDidMount = ()=>{
         this.setState({id:this.props.id, name:this.props.name, new:this.props.new})
+        console.log(this)
     }
 
     addScene = ()=>{
@@ -35,8 +36,9 @@ export default class scene extends React.Component{
         // sending name to database
         axios({
             method: 'post',
-            url: 'http://localhost:3300/udpateScene',
+            url: 'http://localhost:3300/updateScene',
             data: {
+                id:this.state.id,
                 name:this.state.name
             }
             // responseType: 'stream'
@@ -45,22 +47,18 @@ export default class scene extends React.Component{
         });
     }
 
-    hideInput = (e)=>{
-
-        e.target.style.display = "none"
-
+    deleteScene = ()=>{
         // sending name to database
         axios({
             method: 'post',
-            url: 'http://localhost:3300/addScene',
+            url: 'http://localhost:3300/deleteScene',
             data: {
-                name:this.state.name
+                id:this.state.id,
             }
             // responseType: 'stream'
         }).then((response) =>{
             this.props.updateSceneList()
         });
-
     }
 
     handleInputChange = (e)=>{
@@ -68,11 +66,21 @@ export default class scene extends React.Component{
     }
 
     renderScene = ()=>{
-        if(this.state.new){
+        if(this.state.new == "new"){
             return(
                 <div className="scene">
                     <input type="text" key={"sceneInput" + (this.state.id)} onBlur={(e)=>{
-                        this.hideInput(e)
+                        this.addScene(e)
+                        this.setState({ new:false })
+                    }} onChange={(e)=>{this.handleInputChange(e)}}/>
+                </div>
+            )
+        }
+        else if(this.state.new == "update"){
+            return(
+                <div className="scene">
+                    <input type="text" key={"sceneInput" + (this.state.id)} onBlur={(e)=>{
+                        this.updateScene()
                         this.setState({ new:false })
                     }} onChange={(e)=>{this.handleInputChange(e)}}/>
                 </div>
@@ -83,8 +91,9 @@ export default class scene extends React.Component{
                 <div className="scene">
                     {this.props.name}
                     <div>
-                        <i class="fas fa-edit"></i>
+                        <i class="fas fa-edit" onClick={()=>{this.setState({new:"update"})}}></i>
                         <i class="fas fa-plus" onClick={()=>{this.addScene()}}></i>
+                        <i class="fas fa-trash" onClick={()=>this.deleteScene()}></i>
                     </div>
                 </div>
             )

@@ -14,7 +14,7 @@ app.use(bodyParser.json()) // for parsing application/json
 // importing modals
 const project = require('./modals/projects')
 const scene = require('./modals/scenes')
-
+var ObjectId = require('mongoose').Types.ObjectId
 
 app.post('/test', function (req, res) {
     res.send('hello world')
@@ -42,7 +42,19 @@ app.post('/getScenes', (req,res)=>{
 })
 
 app.post('/updateScene', (req,res)=>{
-    project.UpdateOne({name:"pacman"}, {})
+    
+    project.updateOne({name:"pacman", "scenes._id":new ObjectId(req.body.id)}, {$set:{"scenes.$.name":req.body.name}}, function(error, success) {
+        res.sendStatus(200)
+     })
+    
+})
+
+app.post('/deleteScene', (req,res)=>{
+    console.log(req.body)
+    project.updateOne({name:"pacman"}, {$pull:{"scenes":{"_id":new ObjectId(req.body.id)}}}, function(error, success) {
+        res.sendStatus(200)
+     })
+    
 })
 
 app.post('/addElement', (req,res)=>{
