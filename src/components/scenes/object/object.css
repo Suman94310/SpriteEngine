@@ -1,0 +1,12 @@
+.object{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.object> input{
+    border: solid 0 black;
+    outline: none;
+    box-shadow: none;
+    background-color: #333B4F;
+}

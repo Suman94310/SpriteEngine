@@ -32,7 +32,7 @@ export default class Scenes extends React.Component {
             console.log(res)
             let newSceneList = []
             for(let i=0; i<res.data.length; i++){
-                newSceneList.push(<Scene key={res.data[i]._id} id={res.data[i]._id} name={res.data[i].name} updateSceneList={this.updateSceneList}/>)
+                newSceneList.push(<Scene key={res.data[i]._id} id={res.data[i]._id} name={res.data[i].name} updateSceneList={this.updateSceneList} new={false}/>)
             }
             this.setState({sceneList:newSceneList})
         });
@@ -64,13 +64,6 @@ export default class Scenes extends React.Component {
                     </div>
                     <div className="scenes" id="scenes">
                         <ul>
-                            {/* <li>
-                                <ul>
-                                    <li>box1</li>
-                                    <li>box1</li>
-                                    <li>box1</li>
-                                </ul>
-                            </li> */}
                             {this.state.sceneList}
                         </ul>
                     </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import './scene.css'
 import axios from 'axios'
+import Object from '../object/object'
 
 export default class scene extends React.Component{
     constructor(){
@@ -9,13 +10,34 @@ export default class scene extends React.Component{
         this.state = {
             name: "",
             id: 0,
-            new: false
+            new: false,
+            objects:[]
         }
     }
 
     componentDidMount = ()=>{
-        this.setState({id:this.props.id, name:this.props.name, new:this.props.new})
-        console.log(this)
+        this.setState({id:this.props.id, name:this.props.name, new:this.props.new, parentId:this.props.parentId}, ()=>{this.getObjects()})
+    }
+
+    getObjects = ()=>{
+        console.log("getting objects")
+        if(this.state.new === false){
+            axios({
+                method: 'post',
+                url: 'http://localhost:3300/getObjects',
+                data: {
+                    name:this.state.name,
+                    parentId: this.state.id
+                }
+                // responseType: 'stream'
+            }).then((response) =>{
+                let temp = []
+                for(let i=0; i<response.data.objects.length; i++){
+                    temp.push(<Object name={response.data.objects[i].name} parentId={this.state.id} id={response.data.objects[i]._id} new={false}/>)
+                }
+                this.setState({objects:temp})
+            });
+        }
     }
 
     addScene = ()=>{
@@ -30,6 +52,7 @@ export default class scene extends React.Component{
         }).then((response) =>{
             this.props.updateSceneList()
         });
+        
     }
 
     updateScene = ()=>{
@@ -65,8 +88,19 @@ export default class scene extends React.Component{
         this.setState({name:e.target.value})
     }
 
+    createObject = ()=>{
+        let objectList = [...this.state.objects]
+        objectList.push(
+            <li key={objectList.length}>
+                <Object parentId={this.state.id} new={"new"}/>
+            </li>
+        )
+        this.setState({objects:objectList})
+        console.log("cyka")
+    }
+
     renderScene = ()=>{
-        if(this.state.new == "new"){
+        if(this.state.new === "new"){
             return(
                 <div className="scene">
                     <input type="text" key={"sceneInput" + (this.state.id)} onBlur={(e)=>{
@@ -76,7 +110,7 @@ export default class scene extends React.Component{
                 </div>
             )
         }
-        else if(this.state.new == "update"){
+        else if(this.state.new === "update"){
             return(
                 <div className="scene">
                     <input type="text" key={"sceneInput" + (this.state.id)} onBlur={(e)=>{
@@ -92,7 +126,7 @@ export default class scene extends React.Component{
                     {this.props.name}
                     <div>
                         <i class="fas fa-edit" onClick={()=>{this.setState({new:"update"})}}></i>
-                        <i class="fas fa-plus" onClick={()=>{this.addScene()}}></i>
+                        <i class="fas fa-plus" onClick={()=>{this.createObject()}}></i>
                         <i class="fas fa-trash" onClick={()=>this.deleteScene()}></i>
                     </div>
                 </div>
@@ -100,11 +134,20 @@ export default class scene extends React.Component{
         }
     }
 
+    renderObjects = ()=>{
+        return(
+            <ul>
+                {this.state.objects}
+            </ul>
+        )
+    }
+
     render(){
         return(
-            <div>
+            <li>
                 {this.renderScene()}
-            </div>
+                {this.renderObjects()}
+            </li>
         )
     }
 }

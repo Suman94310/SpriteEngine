@@ -7,7 +7,7 @@ let Schema = mongoose.Schema
 
 let objectSchema = new Schema({
     name: String,
-    rank: Number,
+    zIndex: Number,
     position: Mixed,
     dimensions: Mixed,
     sprite: String,
@@ -15,4 +15,4 @@ let objectSchema = new Schema({
 
 const object = new mongoose.model("object",objectSchema)
 
-module.exports = object
+module.exports = {object:object,  objectSchema:objectSchema}
