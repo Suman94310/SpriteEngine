@@ -31,9 +31,10 @@ export default class scene extends React.Component{
                 }
                 // responseType: 'stream'
             }).then((response) =>{
+                console.log(response.data)
                 let temp = []
                 for(let i=0; i<response.data.objects.length; i++){
-                    temp.push(<Object name={response.data.objects[i].name} parentId={this.state.id} id={response.data.objects[i]._id} new={false}/>)
+                    temp.push(<Object name={response.data.objects[i].name} parentId={this.state.id} id={response.data.objects[i]._id} new={false} updateSelectedObject={this.props.updateSelectedObject} position={response.data.objects[i].position} dimensions={response.data.objects[i].dimensions}/>)
                 }
                 this.setState({objects:temp})
             });
@@ -92,7 +93,7 @@ export default class scene extends React.Component{
         let objectList = [...this.state.objects]
         objectList.push(
             <li key={objectList.length}>
-                <Object parentId={this.state.id} new={"new"}/>
+                <Object parentId={this.state.id} new={"new"} updateSelectedObject={this.props.updateSelectedObject} />
             </li>
         )
         this.setState({objects:objectList})

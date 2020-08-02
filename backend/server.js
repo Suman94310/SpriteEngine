@@ -63,7 +63,15 @@ app.post('/deleteScene', (req,res)=>{
 // ===============objects==================
 
 app.post('/addObject', (req,res)=>{
-    let newObject = new object({name:req.body.name})
+    let newObject = new object(
+        {
+            parentId: req.body.parentId,
+            name:req.body.name,
+            position: req.body.position,
+            dimensions: req.body.dimensions,
+            sprite: req.body.sprite
+        }
+    )
     project.updateOne({name:"pacman", "scenes._id":new ObjectId(req.body.parentId)}, {$push:{"scenes.$.objects":newObject}}, function(error, success) {
         res.sendStatus(200)
      })
@@ -77,20 +85,22 @@ app.post('/getObjects', (req,res)=>{
 })
 
 app.post('/deleteObject', (req,res)=>{
-    console.log("deleting object")
     project.updateOne({name:"pacman", "scenes._id":new ObjectId(req.body.parentId), "scenes.objects._id": new ObjectId(req.body.id)}, {$pull:{"scenes.$.objects":{"_id":new ObjectId(req.body.id)}}}, function(error, success) {
         res.sendStatus(200)
+        console.log("deleted")
      })
 })
 
 app.post('/updateObject', (req,res)=>{
     console.log("updating")
+    console.log(req.body)
     project.findOne({name:"pacman", "scenes._id":new ObjectId(req.body.parentId)},(err,game)=>{
         let list = game.scenes.id(req.body.parentId).objects
+        console.log(list)
         for(let i=0; i<list.length; i++){
             if(new ObjectId(req.body.id).equals(list[i]._id )){
                 console.log("updated")
-                list[i].name = req.body.name
+                list[i] = req.body
             }
         }
         game.save()

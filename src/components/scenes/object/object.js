@@ -18,7 +18,18 @@ export default class object extends React.Component{
     }
     
     componentDidMount = ()=>{
-        this.setState({id:this.props.id, name:this.props.name, parentId:this.props.parentId, new:this.props.new})
+        this.setState({
+            id:this.props.id, 
+            name:this.props.name, 
+            parentId:this.props.parentId, 
+            new:this.props.new, 
+        })
+        if(this.props.dimensions){
+            this.setState({dimensions: this.props.dimensions})
+        }
+        if(this.props.position){
+            this.setState({position: this.props.position})
+        }
     }
 
     addObject = (e)=>{
@@ -28,7 +39,10 @@ export default class object extends React.Component{
                 url: 'http://localhost:3300/addObject',
                 data: {
                     parentId:this.state.parentId,
-                    name:this.state.name
+                    name:this.state.name,
+                    position: this.state.position,
+                    dimensions: this.state.dimensions,
+                    sprite: this.state.sprite
                 }
             });
         })
@@ -47,18 +61,50 @@ export default class object extends React.Component{
         });
     }
 
-    updateObject = (e)=>{
-        this.setState({name:e.target.value, new:false},()=>{
-            axios({
-                method: 'post',
-                url: 'http://localhost:3300/updateObject',
-                data: {
-                    name:this.state.name,
-                    id:this.state.id,
-                    parentId:this.state.parentId
+    updateObject = (e, argument=false)=>{
+        if(argument){
+            console.log(argument)
+            this.setState(
+                {
+                    parentId:argument.parentId,
+                    name:argument.name,
+                    position: argument.position,
+                    dimensions: argument.dimensions,
+                    sprite: argument.sprite,
+                    id:argument.id
                 }
+                ,()=>{
+                    console.log(this.state)
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:3300/updateObject',
+                    data: {
+                        parentId:argument.parentId,
+                        name:argument.name,
+                        position: argument.position,
+                        dimensions: argument.dimensions,
+                        sprite: argument.sprite,
+                        id:argument.id
+                    }
+                })
             })
-        })
+        }
+        else{
+            this.setState({name:e.target.value, new:false},()=>{
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:3300/updateObject',
+                    data: {
+                        parentId:this.state.parentId,
+                        name:this.state.name,
+                        position: this.state.position,
+                        dimensions: this.state.dimensions,
+                        sprite: this.state.sprite,
+                        id: this.state.id
+                    }
+                })
+            })
+        }
     }
 
     renderObject = ()=>{
@@ -95,10 +141,20 @@ export default class object extends React.Component{
     }
 
     render(){
-        return(
-            <div onDoubleClick={()=>{this.setState({new:"new"})}}>
-                {this.renderObject()}
-            </div>
-        )
+        if(this.state.new=="new"){
+            return(
+                <div onDoubleClick={()=>{this.setState({new:"update"})}}>
+                    {this.renderObject()}
+                </div>
+            )
+        }
+        else{
+            return(
+                <div onDoubleClick={()=>{this.setState({new:"update"})}} onClick={()=>{this.props.updateSelectedObject({state:this.state,updateFunction:this.updateObject})}}>
+                    {this.renderObject()}
+                </div>
+            )
+        }
+        
     }
 }

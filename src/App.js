@@ -12,13 +12,30 @@ import Container from './components/editor/container/container'
 
 
 class App extends React.Component {
+
+	constructor(){
+		super()
+		this.state = {
+			selectedObject: undefined,
+			selectedFile: undefined	
+		}
+	}
+
+	updateSelectedObject = (selection)=>{
+		this.setState({selectedObject: selection})
+	}
+
+	updateSelectedFile = (selection)=>{
+		this.setState({selectedFile: selection})
+	}
+
 	render(){
 		return (
 			<div className="App">
-				<Scenes/>
+				<Scenes updateSelectedObject={this.updateSelectedObject}/>
 				<Files/>
 				<Container/>
-				<Inspector/>
+				<Inspector selectedObject={this.state.selectedObject}/>
 			</div>
 		);
 	}
