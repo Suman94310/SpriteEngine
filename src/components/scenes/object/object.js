@@ -44,11 +44,15 @@ export default class object extends React.Component{
                     dimensions: this.state.dimensions,
                     sprite: this.state.sprite
                 }
+            }).then((response)=>{
+                this.setState({id:response.data})
+                this.props.updateAppObjects([this.state],"insert")
             });
         })
     }
 
     deleteObject = ()=>{
+        this.props.updateAppObjects([this.state],"delete")
         this.setState({new:"deleted"})
         axios({
             method: 'post',
@@ -59,11 +63,11 @@ export default class object extends React.Component{
                 parentId:this.state.parentId
             }
         });
+        
     }
 
     updateObject = (e, argument=false)=>{
         if(argument){
-            console.log(argument)
             this.setState(
                 {
                     parentId:argument.parentId,
@@ -74,19 +78,19 @@ export default class object extends React.Component{
                     id:argument.id
                 }
                 ,()=>{
-                    console.log(this.state)
-                axios({
-                    method: 'post',
-                    url: 'http://localhost:3300/updateObject',
-                    data: {
-                        parentId:argument.parentId,
-                        name:argument.name,
-                        position: argument.position,
-                        dimensions: argument.dimensions,
-                        sprite: argument.sprite,
-                        id:argument.id
-                    }
-                })
+                    this.props.updateAppObjects([this.state],"update")
+                    axios({
+                        method: 'post',
+                        url: 'http://localhost:3300/updateObject',
+                        data: {
+                            parentId:argument.parentId,
+                            name:argument.name,
+                            position: argument.position,
+                            dimensions: argument.dimensions,
+                            sprite: argument.sprite,
+                            id:argument.id
+                        }
+                    })
             })
         }
         else{
@@ -132,8 +136,8 @@ export default class object extends React.Component{
                 <div className="object">
                     {this.state.name}
                     <div>
-                        <i class="fas fa-edit" onClick={()=>{this.setState({new:"update"})}}></i>
-                        <i class="fas fa-trash" onClick={()=>this.deleteObject()}></i>
+                        <i className="fas fa-edit" onClick={()=>{this.setState({new:"update"})}}></i>
+                        <i className="fas fa-trash" onClick={()=>this.deleteObject()}></i>
                     </div>
                 </div>
             )
@@ -141,7 +145,7 @@ export default class object extends React.Component{
     }
 
     render(){
-        if(this.state.new=="new"){
+        if(this.state.new==="new"){
             return(
                 <div onDoubleClick={()=>{this.setState({new:"update"})}}>
                     {this.renderObject()}

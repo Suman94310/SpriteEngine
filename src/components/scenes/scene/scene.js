@@ -6,7 +6,6 @@ import Object from '../object/object'
 export default class scene extends React.Component{
     constructor(){
         super()
-        // console.log(this.props)
         this.state = {
             name: "",
             id: 0,
@@ -20,7 +19,6 @@ export default class scene extends React.Component{
     }
 
     getObjects = ()=>{
-        console.log("getting objects")
         if(this.state.new === false){
             axios({
                 method: 'post',
@@ -31,12 +29,12 @@ export default class scene extends React.Component{
                 }
                 // responseType: 'stream'
             }).then((response) =>{
-                console.log(response.data)
                 let temp = []
                 for(let i=0; i<response.data.objects.length; i++){
-                    temp.push(<Object name={response.data.objects[i].name} parentId={this.state.id} id={response.data.objects[i]._id} new={false} updateSelectedObject={this.props.updateSelectedObject} position={response.data.objects[i].position} dimensions={response.data.objects[i].dimensions}/>)
+                    temp.push(<Object name={response.data.objects[i].name} parentId={this.state.id} id={response.data.objects[i]._id} key={response.data.objects[i]._id} new={false} updateSelectedObject={this.props.updateSelectedObject} position={response.data.objects[i].position} dimensions={response.data.objects[i].dimensions} updateAppObjects={this.props.updateAppObjects}/>)
                 }
                 this.setState({objects:temp})
+                this.props.updateAppObjects(response.data.objects,"insert")
             });
         }
     }
@@ -93,11 +91,10 @@ export default class scene extends React.Component{
         let objectList = [...this.state.objects]
         objectList.push(
             <li key={objectList.length}>
-                <Object parentId={this.state.id} new={"new"} updateSelectedObject={this.props.updateSelectedObject} />
+                <Object parentId={this.state.id} new={"new"} updateSelectedObject={this.props.updateSelectedObject} updateAppObjects={this.props.updateAppObjects} />
             </li>
         )
         this.setState({objects:objectList})
-        console.log("cyka")
     }
 
     renderScene = ()=>{
@@ -126,9 +123,9 @@ export default class scene extends React.Component{
                 <div className="scene">
                     {this.props.name}
                     <div>
-                        <i class="fas fa-edit" onClick={()=>{this.setState({new:"update"})}}></i>
-                        <i class="fas fa-plus" onClick={()=>{this.createObject()}}></i>
-                        <i class="fas fa-trash" onClick={()=>this.deleteScene()}></i>
+                        <i className="fas fa-edit" onClick={()=>{this.setState({new:"update"})}}></i>
+                        <i className="fas fa-plus" onClick={()=>{this.createObject()}}></i>
+                        <i className="fas fa-trash" onClick={()=>this.deleteScene()}></i>
                     </div>
                 </div>
             )

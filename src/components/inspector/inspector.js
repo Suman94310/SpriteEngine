@@ -3,6 +3,25 @@ import './inspector.css'
 import PerfectScrollbar from 'perfect-scrollbar';
 
 export default class Inspector extends React.Component {
+    constructor(){
+        super()
+        this.state = {
+            selected:false,
+            parentId:undefined,
+            name:undefined,
+            position:{
+                x: undefined,
+                y: undefined
+            },
+            dimensions:{
+                x: undefined,
+                y: undefined
+            },
+            sprite: undefined,
+            id: undefined
+        }
+    }
+    
     componentDidMount=()=>{
         const ps = new PerfectScrollbar('#inspectors',{
             wheelSpeed: 2,
@@ -11,8 +30,28 @@ export default class Inspector extends React.Component {
         });
     }
 
+    componentWillReceiveProps=(nextProp)=>{
+        if(nextProp.selectedObject){
+            this.setState({
+                selected:true,
+                parentId:nextProp.selectedObject.state.parentId,
+                name:nextProp.selectedObject.state.name,
+                position:{
+                    x: nextProp.selectedObject.state.position.x,
+                    y: nextProp.selectedObject.state.position.y
+                }, 
+                dimensions: {
+                    x: nextProp.selectedObject.state.dimensions.x,
+                    y: nextProp.selectedObject.state.dimensions.y
+                },
+                sprite: nextProp.selectedObject.state.sprite,
+                id: nextProp.selectedObject.state.id
+            })
+        }
+    }
+
     handleInputChange = (data)=>{
-        let argument = {
+        this.setState({
             parentId:this.props.selectedObject.state.parentId,
             name:this.props.selectedObject.state.name,
             position: (data.position)? {
@@ -31,37 +70,39 @@ export default class Inspector extends React.Component {
             },
             sprite: this.props.selectedObject.state.sprite,
             id: this.props.selectedObject.state.id
-        }
-        console.log(argument)
-        this.props.selectedObject.updateFunction("e",argument)
+        })
+    }
+
+    handleInputBLur = ()=>{
+        this.props.selectedObject.updateFunction("e",this.state)
     }
 
     renderProperties = ()=>{
         // output.push(<div>{this.props.dimensions}</div>)
-        if(this.props.selectedObject !== undefined){
+        if(this.state.selected){
             return(
                 <div>
                     <div>
                         Dimensions
                         <hr/>
                         <div>
-                            x: <input type="number" placeholder={this.props.selectedObject.state.dimensions.x} onBlur = {(e)=>{this.handleInputChange({dimensions:{x:e.target.value}})}}/>
+                            x: <input type="number" value={this.state.dimensions.x} onChange = {(e)=>{this.handleInputChange({dimensions:{x:e.target.value}})}} onBlur = {(e)=>{this.handleInputBLur({dimensions:{x:e.target.value}})}}/>
                         </div>
                         <div>
-                            y: <input type="number" placeholder={this.props.selectedObject.state.dimensions.y} onBlur = {(e)=>{this.handleInputChange({dimensions:{y:e.target.value}})}}/>
+                            y: <input type="number" value={this.state.dimensions.y} onChange = {(e)=>{this.handleInputChange({dimensions:{y:e.target.value}})}} onBlur = {(e)=>{this.handleInputBLur({dimensions:{y:e.target.value}})}}/>
                         </div>
                     </div>
                     <div>
                         Positions
                         <hr/>
                         <div>
-                            x: <input type="number" placeholder={this.props.selectedObject.state.position.x} onBlur = {(e)=>{this.handleInputChange({position:{x:e.target.value}})}}/>
+                            x: <input type="number" value={this.state.position.x} onChange = {(e)=>{this.handleInputChange({position:{x:e.target.value}})}} onBlur = {(e)=>{this.handleInputBLur({position:{x:e.target.value}})}}/>
                         </div>
                         <div>
-                            y: <input type="number" placeholder={this.props.selectedObject.state.position.y} onBlur = {(e)=>{this.handleInputChange({position:{y:e.target.value}})}}/>
+                            y: <input type="number" value={this.state.position.y} onChange = {(e)=>{this.handleInputChange({position:{y:e.target.value}})}} onBlur = {(e)=>{this.handleInputBLur({position:{y:e.target.value}})}}/>
                         </div>
                         <div>
-                            z: <input type="number" placeholder={this.props.selectedObject.state.position.z} onBlur = {(e)=>{this.handleInputChange({position:{z:e.target.value}})}}/>
+                            z: <input type="number" value={this.state.position.z} onChange = {(e)=>{this.handleInputChange({position:{z:e.target.value}})}} onBlur = {(e)=>{this.handleInputBLur({position:{z:e.target.value}})}}/>
                         </div>
                     </div>
                     <div>
@@ -92,7 +133,6 @@ export default class Inspector extends React.Component {
                     <div className="inspectors" id="inspectors">
                         <ul>
                             {this.renderProperties()}
-                            
                         </ul>
                     </div>
                 </div>

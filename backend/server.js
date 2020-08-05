@@ -72,10 +72,17 @@ app.post('/addObject', (req,res)=>{
             sprite: req.body.sprite
         }
     )
-    project.updateOne({name:"pacman", "scenes._id":new ObjectId(req.body.parentId)}, {$push:{"scenes.$.objects":newObject}}, function(error, success) {
-        res.sendStatus(200)
-     })
+    
+    project.findOne({name:"pacman"}, function(error, game){
+        game.scenes.id(req.body.parentId).objects.push(newObject)
+        game.save()
+        res.send(newObject._id)
+    })
 })
+
+// app.post('/getAllObjects', (req,res)=>{
+//     object.findAll
+// })
 
 app.post('/getObjects', (req,res)=>{
     console.log("sending objects")
@@ -93,10 +100,8 @@ app.post('/deleteObject', (req,res)=>{
 
 app.post('/updateObject', (req,res)=>{
     console.log("updating")
-    console.log(req.body)
     project.findOne({name:"pacman", "scenes._id":new ObjectId(req.body.parentId)},(err,game)=>{
         let list = game.scenes.id(req.body.parentId).objects
-        console.log(list)
         for(let i=0; i<list.length; i++){
             if(new ObjectId(req.body.id).equals(list[i]._id )){
                 console.log("updated")

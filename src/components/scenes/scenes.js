@@ -29,10 +29,9 @@ export default class Scenes extends React.Component {
             url: 'http://localhost:3300/getScenes',
             // responseType: 'stream'
           }).then((res) =>{
-            console.log(res)
             let newSceneList = []
             for(let i=0; i<res.data.length; i++){
-                newSceneList.push(<Scene key={res.data[i]._id} id={res.data[i]._id} name={res.data[i].name} updateSceneList={this.updateSceneList} new={false} updateSelectedObject={this.props.updateSelectedObject}/>)
+                newSceneList.push(<Scene key={res.data[i]._id} id={res.data[i]._id} name={res.data[i].name} updateSceneList={this.updateSceneList} new={false} updateSelectedObject={this.props.updateSelectedObject} updateAppObjects={this.props.updateAppObjects}/>)
             }
             this.setState({sceneList:newSceneList})
         });
@@ -43,7 +42,7 @@ export default class Scenes extends React.Component {
         let sceneList = [...this.state.sceneList]
         sceneList.push(
         <li key={"sceneList"+(sceneList.length)}>
-            <Scene key={"scene"+(sceneList.length)} id={sceneList.length} ref={sceneRef} updateSceneList={this.updateSceneList} new={"new"} updateSelectedObject={this.props.updateSelectedObject}/>
+            <Scene key={"scene"+(sceneList.length)} id={sceneList.length} ref={sceneRef} updateSceneList={this.updateSceneList} new={"new"} updateSelectedObject={this.props.updateSelectedObject} updateAppObjects={this.props.updateAppObjects}/>
         </li>)
         this.setState({sceneList})
         this.state.sceneRefList.push(sceneRef)
