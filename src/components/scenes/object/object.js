@@ -78,6 +78,8 @@ export default class object extends React.Component{
                     id:argument.id
                 }
                 ,()=>{
+            this.props.updateSelectedObject({state:this.state,updateFunction:this.updateObject})
+
                     this.props.updateAppObjects([this.state],"update")
                     axios({
                         method: 'post',

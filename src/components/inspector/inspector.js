@@ -32,6 +32,8 @@ export default class Inspector extends React.Component {
 
     componentWillReceiveProps=(nextProp)=>{
         if(nextProp.selectedObject){
+
+            console.log("here blyat------------",nextProp.selectedObject.state.dimensions)
             this.setState({
                 selected:true,
                 parentId:nextProp.selectedObject.state.parentId,
@@ -56,14 +58,14 @@ export default class Inspector extends React.Component {
             name:this.props.selectedObject.state.name,
             position: (data.position)? {
                 x: (data.position.x)? data.position.x:this.props.selectedObject.state.position.x,
-                y: (data.position.y)? data.position.x:this.props.selectedObject.state.position.y
+                y: (data.position.y)? data.position.y:this.props.selectedObject.state.position.y
             }:{
                 x: this.props.selectedObject.state.position.x,
                 y: this.props.selectedObject.state.position.y
             }, 
             dimensions: (data.dimensions)? {
                 x: (data.dimensions.x)? data.dimensions.x:this.props.selectedObject.state.dimensions.x,
-                y: (data.dimensions.y)? data.dimensions.x:this.props.selectedObject.state.dimensions.y
+                y: (data.dimensions.y)? data.dimensions.y:this.props.selectedObject.state.dimensions.y
             }:{
                 x: this.props.selectedObject.state.dimensions.x,
                 y: this.props.selectedObject.state.dimensions.y
@@ -75,6 +77,8 @@ export default class Inspector extends React.Component {
 
     handleInputBLur = ()=>{
         this.props.selectedObject.updateFunction("e",this.state)
+        console.log(this.state)
+        this.props.updateAppObjects([this.state], "update")
     }
 
     renderProperties = ()=>{

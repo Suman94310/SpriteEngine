@@ -9,7 +9,7 @@ export default class Container extends React.Component{
     render(){
         return(
             <div className="container" id="Editor">
-                <Canvas/>
+                <Canvas objects={this.props.objects}/>
                 <Code/>
                 <Tabs/>
             </div>

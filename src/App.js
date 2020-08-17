@@ -59,8 +59,8 @@ class App extends React.Component {
 		if(tag==="update"){
 			let newList = [...this.state.objects]
 			for(let i=0; i<newList.length; i++){
-				if(objects[0]._id === newList[i]._id){
-					newList[i] = objects[0].name
+				if(objects[0].id === newList[i]._id || objects[0].id === newList[i].id){
+					newList[i] = objects[0]
 				}
 			}
 			this.setState({objects:newList})
@@ -72,8 +72,8 @@ class App extends React.Component {
 			<div className="App">
 				<Scenes updateSelectedObject={this.updateSelectedObject} addAppObjects={this.addAppObjects} updateAppObjects={this.updateAppObjects}/>
 				<Files/>
-				<Container/>
-				<Inspector selectedObject={this.state.selectedObject}/>
+				<Container objects={this.state.objects}/>
+				<Inspector selectedObject={this.state.selectedObject} updateAppObjects={this.updateAppObjects}/>
 			</div>
 		);
 	}
